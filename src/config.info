@@ -1,0 +1,13 @@
+PATH_VB_DEFAULTHDPATH=Pool-Directory for Standalone HardDisks: ,7
+multiuser=User Mode,4,0-root only,1-Multi User
+PATH_VB_BIN=Directory for VirtualBox binary: ,7
+vboxexport=VM Exportdirectory for Multi User Mode,7
+FILE_STARTUPSCRIPT=Location for "vboxcontrol" init.d startup script,8
+FILE_VM_ENABLED=Location for "machines_enabled",8
+SEP_VBADMIN=VBox Modul User Administration options,11,
+ADMINMODE=Use VBox Administration Mode (See Help),4,0-No,1-Yes
+ADMINGROUP=Used VB Admingroup,6
+SEP_VBDEBUG=VBox Modul Debug options,11,
+DEBUGMODE=Developer Mode (See Help),4,0-Off,1-On
+
+

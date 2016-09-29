@@ -1,0 +1,201 @@
+<a name='top'>&nbsp;</a>
+<header>VBox Manager Help</header><br>
+
+This page is for configure the Webmin Module VBox Manager.
+<br><br>
+<table style='border:thin dashed; border-spacing:5px; background-color:#DCDADA;'>
+<tr bgcolor='#DCDADA'>
+	<td>
+	<b>If you use this module at the first time, follow the next steps:<br>
+	
+	<ol>
+		<li> Create the <i><a href='#pooldir'>Pool-Directory</a></i> for Standalone HardDisks.
+		<li> Create the <i><a href='#exportdir'>VM Export-Directory</a></i> for Multi User Mode
+		<li> Setup the <i><a href='#sudo'>SUDO Command</a></i> for "Multi User Mode".
+	</ol>
+	</b>
+	</td>
+</tr>
+</table>
+
+<br><br>
+
+<address><b>Content</b></address>
+
+<a href='#pooldir'>Pool-Directory for Standalone HardDisks</a><br>
+<a href='#newhd'>New Harddisks</a><br>
+<a href='#hdctrl'>Modify VM Harddisk Controller</a><br>
+<a href='#usermode'>User Mode</a><br>
+<a href='#bindir'>Directory for VirtualBox binary</a><br>
+<a href='#exportdir'>VM Exportdirectory for Multi User Mode</a><br>
+<a href='#init.d'>Location for "vboxcontrol" init.d startup script</a><br>
+<a href='#mach_enabled'>Location for "machines_enabled"</a><br>
+<a href='#vboxadminmode'>Use VBox Administration Mode</a><br>
+<a href='#vboxadmingroup'>Used VB Admingroup</a><br>
+<a href='#devmode'>Developer Mode</a><br>
+<a href='#notes'>Notes</a><br>
+<a href='#versions'>Version Tree</a><br>
+<br>
+<hr>
+<br>
+
+
+<dl>
+<dt><b><a name='pooldir'>Pool-Directory for Standalone HardDisks</a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd>If you create not VM assigneded Harddisk, you store all of them in the <tt>"Pool-Directory"</tt>. 
+If you assign "free Harddisks" to empty connections from HD-Controller, <tt>VBox Manager</tt> collect all unused HDs from 
+each VM-Directory and the Pool-Directory and show them in a drop-down list.<br><br>
+<dd><tt><i><b>How to create the Pool-Directory</b></i></tt><br>
+<dd>Step 1: mkdir &lt;POOLDIRECTORY&gt;
+<dd>Step 2: chgrp vboxusers &lt;POOLDIRECTORY&gt;
+<dd>Step 3: chmod g+rwx &lt;POOLDIRECTORY&gt;
+<br><br>
+<p>
+<p>
+<dt><b><a name='newhd'>New Harddisks</a></b> <a href='#top'><i>[Top]</i></a><p>
+<tt><i>Harddisks => New Harddisks</i></tt>
+<dd>Now, you can create stand-alone Harddisks for future using with allready created VMs. 
+These HDs can be stored in the HD-Pool or another directory.<br><br>
+<b>Remember, that only the Pool-Directory are considered for the "free HD drop-down list".</b>
+<p>
+<dt><b><a name='hdctrl'>Modify VM Harddisk Controller</a></b> <a href='#top'><i>[Top]</i></a><p>
+<tt><i>VM => Harddisk item</i></tt>
+<dd>You can add or delete unused Harddisk-Controller to the selected VM. 
+Also you can update or detach (if possible) the ports of the attached HDs 
+or add unused HDs to the selected Controllerport.<br><br>
+<p>
+
+
+<dt><b><a name='usermode'>User Mode </a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd><b><i>"root only"</i></b>
+<dd>If you select <tt>"root only"</tt>, the command <tt>VBoxManage</tt> 
+are running under root-environtment. This is usefull when you have installed VirtualBox only under the root account. 
+Therefore you will see only the registerd items for the user root.<p>
+<p>
+<dd><b><i><a name='sudo'>"Multi User"</a></i></b> <a href='#top'><i>[Top]</i></a>
+<dd>If you select <tt>"Multi user"</tt>, for all users in the unix group <tt>"vboxusers"</tt> will displayed the items for VM, 
+HDD and so on.
+The command <tt>VBoxManage</tt> are running under every "vboxusers" account to figure out what items did the user have.
+Before the <tt>"Multi user"</tt> Mode correctly work, you must configure your sudo environment.<br>
+Per default, "sudo" are only allowed for tty-shells like the normal terminals. Therefore you must find in your 
+sudoers file "/etc/sudoers" the following phrase:<p>
+
+<i>
+<br>#
+<br># Disable "ssh hostname sudo <cmd>", because it will show the password in clear.
+<br>#         You have to run "ssh -t hostname sudo <cmd>".
+<br>#
+<br>Defaults    requiretty
+<br>#
+<br></i><p>
+
+Use the command "visudo" and disable the entry "Defaults    requiretty" with a beginning hash "#".<br>
+If you have disabled the entry, vboxctrl can print out wich items are used from wich user (if they are registerd into the unixgroup "vboxusers").
+<p>
+<p>
+<p>
+
+<dt><b><a name='bindir'>Directory for VirtualBox binary</a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd>Set here the path for the binary 'VBoxManage' (normally /usr/lib/virtualbox). 
+If not, it can be, that the Module dont work properly.<br>
+<p>
+
+<dt><b><a name='exportdir'>VM Exportdirectory for Multi User Mode</a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd>For "Multi User" Mode, the module <tt>vboxctrl</tt> need a seperate temporary directory. 
+This directory must have rw rights for the unix group "vboxusers".
+<p>
+
+<dt><b><a name='init.d'>Location for "vboxcontrol" init.d startup script</a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd>If you use <a href='http://jkossen.nl/2008/03/09/start-virtualbox-virtual-machines-on-boot.html' target='_blank'><b>vboxcontrol</b></a> 
+from Jochem Kossen, put here the location of your init.d vboxcontrol startupscript.<br>
+This Entry will be used to figure out your <b>VM_USER=xxx</b> scriptuser account. Please let this scriptline on the original condition.<p>
+
+<dt><b><a name='mach_enabled'>Location for "machines_enabled"</a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd>If you use <a href='http://jkossen.nl/2008/03/09/start-virtualbox-virtual-machines-on-boot.html' target='_blank'><b>vboxcontrol</b></a> 
+from Jochem Kossen, you can setup the "machines_enabled" file for automatic startups off VMs. If you correct set the value for the machines_enabled file, 
+you will see the symbols for toggle the entry in the machines_enabled file.
+<p>
+
+<dt><b><a name='devmode'>Developer Mode</a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd>If you select 'On', the Module switch to verbose mode. 
+In this case all shell, return values, etc. will be print out on the screen.
+<p>
+
+<dt><b><a name='vboxadminmode'>Use VBox Administration Mode</a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd>With the "VBox Administration Mode", you can set wich VMs are displayed for the current Webmin User by the VM-Tab.
+If the current Webmin-User in the "VB Admingroup", then he can see all VMs managed by VBoxControl. 
+If the current Webmin-User not in the "VB Admingroup", he can only see the own VMs.
+<p>
+It's helpfull, if you have different Webmin-User for complete System Administration and VM Administration only.
+<p>
+
+<dt><b><a name='vboxadmingroup'>Used VB Admingroup</a></b> <a href='#top'><i>[Top]</i></a><p>
+<dd>Select the "VB Admingroup". Only Members of this group cann see all VMs. 
+Otherwise, the current Webmin-User see only his own VMs.
+<p>
+
+<br><br><br>
+
+</dl>
+
+<table style='border:thin dashed; border-spacing:5px; background-color:#DCDADA;'>
+<tr bgcolor='#DCDADA'>
+	<td>
+	<b>Notes<br><br>
+	This version is adapted for VirtualBox V4.1.2. It don't work with version V3.x.<br><br>
+	You can create Virtual Harddisks for different formats (VDI, VDMK and VHD) and / or for Dynamic or Fixed Size. 
+	If you import VMs, all imported Virtual Harddisks will be set as an Dynamic VDI !!<br><br></b>
+	</td>
+</tr>
+</table>
+
+
+<br>
+
+<p>
+
+<hr>
+<dl>
+<dt><b><a name='versions'>Version Tree</a></b> <a href='#top'><i>[Top]</i></a><p>
+
+<dd><ul>
+	<li> V4.1.0.a current version
+		<dd>- The VM-Tab shows additionally the VBox GuestAddOn Status.
+		<dd>- Support the "vboxcontrol" init.d startup script.
+	<li> V4.05.2b
+		<dd>- Added Usermanagement - Not ready yet, ongoing...
+		<dd>- Bugfixing "Hostonly Adapter"
+	<li> V4.05.2
+		<dd>- Added: For V4.0.10 changed the startup for VMs from "VBoxManage startvm &lt;VM&gt;" to "VBoxManage startvm &lt;VM&gt; --type headless"
+		<dd>- Added: Form to edit the VM Default Userpreferences like "Default machine folder" etc. for each VMUser.
+		<dd>- Modified: Change the dialog for delete a VM.
+	<li> V4.05.1
+		<dd>- Added: To increase the Perfomance while connect to the main-window, the "VM HD-Info" is move to a separate item.
+		<dd>- Added: Supports the *.iso Devicemanagement.
+	<li> V4.05
+		<dd>- Added: Create standalone HDs to an "HD-Pool" or to an extra specified directory
+		<dd>- Added: Supports the HD Devicemanagement (Create, Delete, Attach, Detach from controller and HDDs)
+	<li> V4.04
+		<dd>- ported for VirtualBox Version 4.0.4.
+	<li> V1.3a 
+		<dd>- Added: Settings of "<i>--nataliasmode</i>".
+	<li> V1.3
+		<dd>- Added the "Multi User" mode with unix "sudo".
+		<dd>- Export/Import with *.ovf files possible.
+		<dd>- Bugfixing.
+	<li> V1.2b1
+		<dd>- Added the new features for portforwarding with switch "-natpf".
+		<dd>- Bugfixing.
+	<li> V1.0a 
+		<dd>- First offical release with basic functions.
+	</ul>
+<p>
+
+</dl>
+
+<address>&copy; 2011-09-12 <a href='mailto:andreasbujok@users.sourceforge.net'>A. Bujok</a></address>
+
+
+
+
+
