@@ -602,7 +602,14 @@ sub GetHOSTInfo
 	{
 	my (@DUMMY);
 	my (%HOSTINFO);
-	$COMMAND = $VBOXBIN."VBoxManage -q list hostinfo";
+	
+	# ------------- debug missing VMS --------------
+	my $COMMAND = $VBOXBIN."VBoxManage -q list vms";
+	my $RETURN = readpipe($COMMAND);
+	print "<hr><p>Debug:<p>$RETURN<br><hr>";
+	# ------------- debug missing VMS --------------
+
+	my $COMMAND = $VBOXBIN."VBoxManage -q list hostinfo";
 	my $RETURN = readpipe($COMMAND);
 	
 	my @DUMMY = split("\n",$RETURN);
@@ -631,7 +638,7 @@ sub GetBridgedIfs
 	my $RETURN = readpipe($COMMAND);
 	
 	# collect IFs Infos
-	my @DATA = split("\n\n",$RETURN);
+	my @DATA = split("\n",$RETURN);
 	
 	foreach my $DUMMY (@DATA)
 		{
@@ -677,7 +684,7 @@ sub GetHostOnlyIfs
 	my $RETURN = readpipe($COMMAND);
 	
 	# collect IFs Infos
-	my @DATA = split("\n\n",$RETURN);
+	my @DATA = split("\n",$RETURN);
 	
 	foreach my $DUMMY (@DATA)
 		{
@@ -1303,7 +1310,6 @@ sub ListAllVM
 		{
 		@VBOXUSER = "root";
 		}
-	
 	
 	foreach my $USER (sort @VBOXUSER)
 		{

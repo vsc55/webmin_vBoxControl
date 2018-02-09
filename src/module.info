@@ -1,8 +1,7 @@
-desc=VBox Manager 
+desc=VirtualBox Control
 category=other
-name=VirtualBox Manager
+name=VirtualBox Control
 os_support=*-linux
 library=vboxctrl-lib.pl
-version=4.1.0.a
-longdesc=Manage Virtual Machines from VirtualBox
-
+version=4.2.0.0
+longdesc=Manage Virtual Machines run by VirtualBox
