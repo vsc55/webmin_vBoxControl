@@ -1,0 +1,11 @@
+DEBUGMODE=0
+multiuser=1
+FILE_STARTUPSCRIPT=/etc/init.d/vboxwebsrv
+PATH_VB_BIN=/opt/VirtualBox
+PATH_VB_DEFAULTHDPATH=
+ADMINMODE=0
+file_startupconfig=/etc/conf.d/vboxwebsrv
+vboxexport=
+ADMINGROUP=
+FILE_VM_ENABLED=
+file_startupconfig_user=VBOXWEBSRV_USER

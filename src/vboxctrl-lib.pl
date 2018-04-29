@@ -340,7 +340,9 @@ sub GetVBoxUser
 #**********************************************************
 sub GetStartupUser
 	{
-	my $COMMAND = "cat $config{'FILE_STARTUPSCRIPT'} | grep -i \"VM_USER=\" ";
+	#my $COMMAND = "cat $config{'FILE_STARTUPSCRIPT'} | grep -i \"VM_USER=\" ";
+	#my $COMMAND = "cat /etc/conf.d/vboxwebsrv | grep -i \"VBOXWEBSRV_USER=\" ";
+	my $COMMAND = "cat $config{'file_startupscriptconf'} | grep -i \"$config{'file_startupconfig_user'}=\" ";
 	my $RETURN = readpipe($COMMAND);
 	$RETURN =~ s/\"//g;
 	my ($VAR,$USER) = split("=",$RETURN);
@@ -476,8 +478,8 @@ sub GetHDDsFromVM_
 			#print "=> ".%HDDS->{$UUID}->{'UUID'}."<br>";
 			#print "=> ".%HDDS->{$UUID}->{'Usage'}."<br>";
 			
-			my $HDUUID = %HDDS->{$UUID}->{'UUID'};
-			my $USAGE = %HDDS->{$UUID}->{'Usage'};
+			my $HDUUID = $HDDS{$UUID}{'UUID'};
+			my $USAGE = $HDDS{$UUID}{'Usage'};
 			#print "VM: '$VM' UUID: '$UUID' HDUUID: '$HDUUID' USAGE: '$USAGE'<br>";
 			#print "index('$USAGE','$VM'): ".index ($USAGE,$VM)."<br>";
 			if ($USAGE =~ /^$VM /i)
@@ -1212,28 +1214,30 @@ sub ListHDDS
 	# if there not allready exists on the collection
 	#************************************************
 	$POOLDIR = $config{'PATH_VB_DEFAULTHDPATH'};
-	if (! ($POOLDIR =~ /\/$/))
+	if ($POOLDIR) 
 		{
-		$POOLDIR .= "/";
-		}
-	$COMMAND = "ls $POOLDIR | grep -i .v*";
-	#print "$COMMAND<br>";
-	my $RETURN = readpipe($COMMAND);
-	my @HDD = split("\n" , $RETURN);
-	
-	foreach my $FILE (@HDD)
-		{
-		my %HDD;
-		my $LOCATION = $POOLDIR.$FILE;
-		if (! ($LOC =~ /\'$LOCATION\'/i) )
+		if (! ($POOLDIR =~ /\/$/))
 			{
-			#print "POOL: '$LOCATION' <br>";
-			#my %HDD;
-			$HDD{'location'} = $LOCATION;
-			$HDDS{"::$LOCATION"} = \%HDD;
+			$POOLDIR .= "/";
+			}
+		$COMMAND = "ls $POOLDIR | grep -i .v*";
+		#print "$COMMAND<br>";
+		my $RETURN = readpipe($COMMAND);
+		my @HDD = split("\n" , $RETURN);
+		
+		foreach my $FILE (@HDD)
+			{
+			my %HDD;
+			my $LOCATION = $POOLDIR.$FILE;
+			if (! ($LOC =~ /\'$LOCATION\'/i) )
+				{
+				#print "POOL: '$LOCATION' <br>";
+				#my %HDD;
+				$HDD{'location'} = $LOCATION;
+				$HDDS{"::$LOCATION"} = \%HDD;
+				}
 			}
 		}
-	
 	return %HDDS;
 	}
 
